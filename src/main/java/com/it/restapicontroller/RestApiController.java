@@ -17,13 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.it.main.restapicontroller.DaoLayerDTO;
+import com.it.main.restapicontroller.DaoLayerWrapperDTO;
+
 @RestController
 @RequestMapping("/v2")
 public class RestApiController {
 	 @Autowired 
 	 private RestTemplate restTemplate;
 	
-	@GetMapping("/login")
+	@GetMapping("/kalldata")
 	public DaoLayerWrapperDTO geDto() {
 		
 		HttpHeaders getHeaders=new HttpHeaders();
@@ -31,8 +34,8 @@ public class RestApiController {
 		HttpEntity<DaoLayerDTO> entity=new HttpEntity<>(getHeaders);
 		List<DaoLayerDTO> daoLayerDTOs= new ArrayList<>();
 		
-			ResponseEntity<?extends List> responseEntity = restTemplate.exchange("http://PMST-NEPAL"+"/api/v1/alldata", HttpMethod.GET, entity, daoLayerDTOs.getClass());
-			List<?> dList=responseEntity.getBody();
+			ResponseEntity<? extends List>  result = restTemplate.exchange("http://PMST-NEPAL"+"/api/v1/alldata",HttpMethod.GET,entity,daoLayerDTOs.getClass());
+			List<?> dList=(List<?>) result.getBody();
 			DaoLayerWrapperDTO daoLayerWrapperDTO=new DaoLayerWrapperDTO();
 			daoLayerWrapperDTO.setCode("1254");
 			daoLayerWrapperDTO.setMessage("Data is fetched");
